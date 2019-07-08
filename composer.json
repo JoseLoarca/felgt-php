@@ -1,0 +1,21 @@
+{
+    "name": "joseloarca/felgt-php",
+    "keywords": ["fel", "sat", "factura electrónica guatemala"],
+    "description": "Librería para generar y firmar facturas electrónicas de acuerdo al régimen FEL.",
+    "type": "library",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "José Loarca",
+            "email": "joseloarca97@icloud.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "joseloarca\\FELGT\\" : "src/"
+        }
+    }
+}
