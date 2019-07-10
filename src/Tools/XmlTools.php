@@ -172,4 +172,14 @@ class XmlTools
 
         return $this->toBase64($signature, $prettify);
     }
+
+    /**
+     * Get XML Namespaces
+     *
+     * @return string[]
+     */
+    protected function getNamespaces() {
+        $xmlns[] = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
+        return $xmlns;
+    }
 }
