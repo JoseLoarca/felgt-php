@@ -19,7 +19,7 @@ class FelIssuer
      *
      * @var string
      */
-    private $ivaAffiliation = 'GEN';
+    private $ivaAffiliation;
 
     /**
      * Issuer business code (Código Establecimiento, ver constancia RTU.)
@@ -103,6 +103,10 @@ class FelIssuer
         foreach ($issuerData as $key => $value) {
             $this->{$key} = $value;
         }
+
+        if (!array_key_exists('ivaAffiliation', $issuerData)) {
+            $this->ivaAffiliation = 'GEN';
+        }
     }
 
     /**
@@ -118,8 +122,8 @@ class FelIssuer
         $xml = '<dte:Emisor AfiliacionIVA="'.$xTools->escapeValue($this->ivaAffiliation).'" CodigoEstablecimiento="'.$xTools->escapeValue($this->businessCode).'"';
 
         // Should we append email address to the issuer data?
-        if ( ! is_null($this->emailAddress)) {
-            $xml .=  ' CorreoEmisor="'.$xTools->escapeValue($this->emailAddress).'" ';
+        if (!is_null($this->emailAddress)) {
+            $xml .= ' CorreoEmisor="'.$xTools->escapeValue($this->emailAddress).'" ';
         }
 
         $xml .= 'NITEmisor="'.$xTools->escapeValue($this->identifier).'" NombreComercial="'.$xTools->escapeValue($this->businessName).'" NombreEmisor="'.$xTools->escapeValue($this->name).'">';
@@ -129,8 +133,8 @@ class FelIssuer
         $issuerAddressXml .= '<dte:Direccion>'.$xTools->escapeValue($this->address).'</dte:Direccion>';
         $issuerAddressXml .= '<dte:CodigoPostal>'.$xTools->escapeValue($this->postalCode).'</dte:CodigoPostal>';
         $issuerAddressXml .= '<dte:Municipio>'.$xTools->escapeValue($this->town).'</dte:Municipio>';
-        $issuerAddressXml .= '<dte:Departamento>' . $xTools->escapeValue($this->department) .'</dte:Departamento>';
-        $issuerAddressXml .= '<dte:Pais>' . $xTools->escapeValue($this->countryCode) . '</dte:Pais>';
+        $issuerAddressXml .= '<dte:Departamento>'.$xTools->escapeValue($this->department).'</dte:Departamento>';
+        $issuerAddressXml .= '<dte:Pais>'.$xTools->escapeValue($this->countryCode).'</dte:Pais>';
         $issuerAddressXml .= '</dte:DireccionEmisor>';
 
         // Append address data
