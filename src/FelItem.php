@@ -124,8 +124,8 @@ class FelItem
         $rate = self::IVA_RATE / 100;
 
         $this->tax = number_format($price * $rate, 2, '.', '');
-        $this->priceWithoutTax = number_format($this->price - $this->tax, 2, '.', '');
-        $this->total = number_format($this->price, 2, '.', '');
+        $this->priceWithoutTax = number_format($price - $this->tax, 2, '.', '');
+        $this->total = number_format($price, 2, '.', '');
 
         $this->price = number_format($this->priceWithoutTax, 2, '.', '');
 
