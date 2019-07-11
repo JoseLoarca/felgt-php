@@ -178,7 +178,7 @@ class XmlTools
      *
      * @return string[]
      */
-    protected function getNamespaces() {
+    public function getNamespaces() {
         $xmlns[] = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
         return $xmlns;
     }
