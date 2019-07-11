@@ -130,7 +130,7 @@ class FelItem
         $this->price = number_format($this->priceWithoutTax, 2, '.', '');
 
         if (is_null($unitPrice)) {
-            $this->unitPrice = number_format($price / $quantity, 2, '.', '');
+            $this->unitPrice = number_format($this->price / $quantity, 2, '.', '');
         }
     }
 
