@@ -56,7 +56,7 @@ class FelPhrase
         $xTools = new XmlTools;
 
         // Build phrase data
-        $xml = '<dte:Frase CodigoEscenario="'.$xTools->escapeValue($this->code).'" TipoFrase="'.$xTools->escapeValue($this->type).'">';
+        $xml = '<dte:Frase CodigoEscenario="'.$xTools->escapeValue($this->code).'" TipoFrase="'.$xTools->escapeValue($this->type).'"/>';
 
         return $xml;
     }

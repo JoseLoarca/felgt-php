@@ -123,7 +123,7 @@ class Fel
      *
      * @var array
      */
-    private $totals = ['grandTotal' => null, 'taxesTotal' => null];
+    private $totals = ['grandTotal' => 0, 'taxesTotal' => 0];
 
     /**
      * Invoice phrases
@@ -276,6 +276,10 @@ class Fel
     private function calculateTotal()
     {
         if (!empty($this->items) && count($this->items)) {
+
+            $this->totals['taxesTotal'] = 0;
+            $this->totals['grandTotal'] = 0;
+
             foreach ($this->items as $item) {
                 $this->totals['taxesTotal'] += $item->getTax();
                 $this->totals['grandTotal'] += $item->getTotal();
@@ -293,7 +297,7 @@ class Fel
         $xTools = new XmlTools;
 
         // Invoice general data
-        $xml = '<dte:DatosGenerales CodigoMoneda="'.$xTools->escapeValue($this->currencyCode).'" FechaHoraEmision="'.$xTools->escapeValue($this->issueDate).'" NumeroAcceso="'.$xTools->escapeValue($this->accessNumber).'" Tipo="'.$xTools->escapeValue(self::INVOICE_TYPE).'">';
+        $xml = '<dte:DatosGenerales CodigoMoneda="'.$xTools->escapeValue($this->currencyCode).'" FechaHoraEmision="'.$xTools->escapeValue($this->issueDate).'" NumeroAcceso="'.$xTools->escapeValue($this->accessNumber).'" Tipo="'.$xTools->escapeValue(self::INVOICE_TYPE).'"/>';
 
         return $xml;
     }

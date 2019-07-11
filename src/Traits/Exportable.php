@@ -48,7 +48,7 @@ trait Exportable
         $totalData = $this->totalToXml();
         $xml .= $totalData;
 
-        $xml .= '</dte:DatosEmision></dte:DTE></dte:SAT>';
+        $xml .= '</dte:DatosEmision></dte:DTE></dte:SAT></dte:GTDocumento>';
 
         return $xml;
     }

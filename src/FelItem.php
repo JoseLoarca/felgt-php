@@ -182,11 +182,11 @@ class FelItem
         // Append tax data
         $xml .= '<dte:Impuestos>';
         $xml .= '<dte:Impuesto>';
-        $xml .= '<dte:NombreCorto>'.$xTools->escapeValue(Fel::IVA_SHORT_NAME).'</dte:NombreCorto';
+        $xml .= '<dte:NombreCorto>'.$xTools->escapeValue(Fel::IVA_SHORT_NAME).'</dte:NombreCorto>';
         $xml .= '<dte:CodigoUnidadGravable>'.$xTools->escapeValue($this->lineNumber).'</dte:CodigoUnidadGravable>';
         $xml .= '<dte:MontoGravable>'.$xTools->escapeValue($this->priceWithoutTax).'</dte:MontoGravable>';
         $xml .= '<dte:CantidadUnidadesGravables>'.$xTools->escapeValue($this->quantity).'</dte:CantidadUnidadesGravables>';
-        $xml .= '<dte:MontoImpuesto>'.$xTools->escapeValue($this->tax).'</dte:>';
+        $xml .= '<dte:MontoImpuesto>'.$xTools->escapeValue($this->tax).'</dte:MontoImpuesto>';
         $xml .= '</dte:Impuesto>';
         $xml .= '</dte:Impuestos>';
 
