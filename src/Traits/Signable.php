@@ -50,7 +50,6 @@ trait Signable
     public function sign($publicPath, $privatePath = null, $passphrase = '')
     {
         // Generate random IDS for xml
-        // Generate random IDs
         $tools = new XmlTools();
         $this->signatureId = $tools->randomId();
         $this->signedInfoId = $tools->randomId();

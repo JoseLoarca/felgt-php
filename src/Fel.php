@@ -15,10 +15,12 @@ use DateTimeZone;
 use Exception;
 use joseloarca\FELGT\Tools\XmlTools;
 use joseloarca\FELGT\Traits\Exportable;
+use joseloarca\FELGT\Traits\Signable;
 
 class Fel
 {
     use Exportable;
+    use Signable;
 
     /**
      * This value indicates default schema version (0.4 as of 2019-07-09 09:24:00 -06:00)
