@@ -50,6 +50,9 @@ trait Exportable
 
         $xml .= '</dte:DatosEmision></dte:DTE></dte:SAT></dte:GTDocumento>';
 
+        // Inject signature to xml
+        $xml = $this->injectSignature($xml);
+
         return $xml;
     }
 }
