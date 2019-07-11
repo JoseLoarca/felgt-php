@@ -95,7 +95,14 @@ class FelRecipient
         $xTools = new XmlTools;
 
         // Build required recipient data
-        $xml = '<dte:Receptor CorreoReceptor="'.$xTools->escapeValue($this->emailAddress).'" IDReceptor="'.$xTools->escapeValue($this->identifier).'" NombreReceptor="'.$xTools->escapeValue($this->name).'">';
+        $xml = '<dte:Receptor ';
+
+        // Should we append email address to the recipient data?
+        if ( ! is_null($this->emailAddress)) {
+            $xml .= 'CorreoReceptor="'.$xTools->escapeValue($this->emailAddress).'"';
+        }
+
+        $xml .=  ' IDReceptor="'.$xTools->escapeValue($this->identifier).'" NombreReceptor="'.$xTools->escapeValue($this->name).'">';
 
         // If recipient address data is available, append it to the xml
         if (!is_null($this->address) && !is_null($this->postalCode) && !is_null($this->town) && !is_null($this->department) && !is_null($this->countryCode)) {
