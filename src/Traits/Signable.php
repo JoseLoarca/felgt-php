@@ -106,22 +106,23 @@ trait Signable
             '<ds:DigestValue>'.$xTools->getCertificateFingerprint($this->publicKey).'</ds:DigestValue>'.
             '</xades:CertDigest>'.
             '<xades:IssuerSerial>'.
-            '<xd:X509IssuerName>'.$certIssuer.'</ds:X509IssuerName>'.
-            '<xd:X509SerialNumber>'.$certData['serialNumber'].'</ds:X509SerialNumber>'.
+            '<xd:X509IssuerName>'.$certIssuer.'</xd:X509IssuerName>'.
+            '<xd:X509SerialNumber>'.$certData['serialNumber'].'</xd:X509SerialNumber>'.
             '</xades:IssuerSerial>'.
             '</xades:Cert>'.
             '</xades:SigningCertificate>'.
+            '</xades:SignedSignatureProperties'.
             '</xades:SignedProperties>';
 
         // Generate KeyInfo
-        $kInfo = '<ds:KeyInfo Id="Certificate'.$this->certificateId.'">'."\n".
+        $kInfo = '<ds:KeyInfo>'."\n".
             '<ds:X509Data>'."\n".
             '<ds:X509Certificate>'."\n".$xTools->getCertificate($this->publicKey).'</ds:X509Certificate>'."\n".
             '<ds:X509SubjectName>'.$certIssuer.'</ds:X509SubjectName>'. "\n".
             '<ds:X509IssuerSerial>'.
             '<ds:X509IssuerName>'.$certIssuer.'</ds:X509IssuerName>'. "\n".
             '<ds:X509SerialNumber>'.$certData['serialNumber'].'</ds:X509SerialNumber>'. "\n".
-            '<ds:X509IssuerSerial>'.
+            '</ds:X509IssuerSerial>'.
             '</ds:X509Data>'."\n".
             '</ds:KeyInfo>';
 
@@ -134,7 +135,6 @@ trait Signable
         $sInfo = '<ds:SignedInfo>'."\n".
             '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'.
             '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>'.
-
             '<ds:Reference Id="xmldsig-'.$this->referenceId.'-ref0" URI="#DatosEmision">'."\n".
             '<ds:Transforms>'."\n".
             '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">'.
@@ -143,7 +143,6 @@ trait Signable
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$documentDigest.'</ds:DigestValue>'."\n".
             '</ds:Reference>'."\n".
-
             '<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xmldsig'.$this->signatureSignedPropertiesId.'-signedprops">'."\n".
             '<ds:Transforms>'. "\n".
             '<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'. "\n" .
