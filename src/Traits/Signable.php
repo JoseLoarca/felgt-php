@@ -22,20 +22,13 @@ trait Signable
     private $privateKey = null;
     
     private $signatureId;
-    
-    private $signedInfoId;
-    
-    private $signedPropertiesId;
-    
+
     private $signatureValueId;
-    
-    private $certificateId;
     
     private $referenceId;
     
     private $signatureSignedPropertiesId;
-    
-    private $signatureObjectId;
+
 
     /**
      * Set sign time
@@ -47,18 +40,12 @@ trait Signable
         $this->signTime = is_string($time) ? strtotime($time) : $time;
     }
 
-    public function sign($publicPath, $privatePath = null, $passphrase = '')
+    public function sign(string $signatureId, $publicPath, $privatePath = null, $passphrase = '')
     {
-        // Generate random IDS for xml
-        $tools = new XmlTools();
-        $this->signatureId = $tools->randomId();
-        $this->signedInfoId = $tools->randomId();
-        $this->signedPropertiesId = $tools->randomId();
-        $this->signatureValueId = $tools->randomId();
-        $this->certificateId = $tools->randomId();
-        $this->referenceId = $tools->randomId();
-        $this->signatureSignedPropertiesId = $tools->randomId();
-        $this->signatureObjectId = $tools->randomId();
+        $this->signatureId = $signatureId;
+        $this->signatureSignedPropertiesId = $signatureId . '-signedprops';
+        $this->referenceId = $signatureId . '-ref0';
+        $this->signatureValueId = $signatureId . '-sigvalue';
 
         // Load public and private keys
         $reader = new KeyReader($publicPath, $privatePath, $passphrase);
