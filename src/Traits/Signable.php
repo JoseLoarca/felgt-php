@@ -111,7 +111,7 @@ trait Signable
             '</xades:IssuerSerial>'.
             '</xades:Cert>'.
             '</xades:SigningCertificate>'.
-            '</xades:SignedSignatureProperties'.
+            '</xades:SignedSignatureProperties>'.
             '</xades:SignedProperties>';
 
         // Generate KeyInfo

@@ -37,7 +37,7 @@ class XmlTools
             return random_int(0x10000000, 0x7FFFFFFF);
         }
 
-        return rand(100000, 999999);
+        return rand(100000000, 999999999);
     }
 
     /**

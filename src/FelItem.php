@@ -22,6 +22,13 @@ class FelItem
     const IVA_RATE = 12;
 
     /**
+     * This value indicates the default IVA multiplier (1.12)
+     *
+     * @var int
+     */
+    const IVA_MULTIPLIER = 1.12;
+
+    /**
      * This value indicates if the item is a good or service
      *
      * @var string
@@ -121,13 +128,13 @@ class FelItem
         $this->discount = number_format($discount, 2, '.', '');
         $this->quantity = number_format($quantity, 2, '.', '');
 
+        $this->priceWithoutTax = number_format($price * self::IVA_MULTIPLIER, 2, '.', '');
+        $this->price = $this->priceWithoutTax;
+
         $rate = self::IVA_RATE / 100;
 
         $this->tax = number_format($price * $rate, 2, '.', '');
-        $this->priceWithoutTax = number_format($price - $this->tax, 2, '.', '');
         $this->total = number_format($price, 2, '.', '');
-
-        $this->price = number_format($this->priceWithoutTax, 2, '.', '');
 
         if (is_null($unitPrice)) {
             $this->unitPrice = number_format($this->price / $quantity, 2, '.', '');

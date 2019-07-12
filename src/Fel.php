@@ -137,13 +137,13 @@ class Fel
     /**
      * Fel constructor.
      *
-     * @param  string  $accessNumber
+     * @param  int  $accessNumber
      * @param  string|null  $issueDate
      * @param  string  $currencyCode
      *
      * @throws Exception
      */
-    public function __construct($accessNumber, $issueDate = null, $currencyCode = self::LOCAL_CURRENCY_CODE)
+    public function __construct(int $accessNumber, $issueDate = null, $currencyCode = self::LOCAL_CURRENCY_CODE)
     {
         $this->accessNumber = $accessNumber;
         $this->currencyCode = $currencyCode;
