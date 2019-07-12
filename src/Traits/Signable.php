@@ -82,8 +82,7 @@ trait Signable
         $certIssuer = implode(',', $certIssuer);
 
         // Generate signed properties
-        $prop = '<xades:SignedProperties Id="Signature'.$this->signatureId.
-            '-SignedProperties'.$this->signatureSignedPropertiesId.'">'.
+        $prop = '<xades:SignedProperties Id="'.$this->signatureSignedPropertiesId.'">'.
             '<xades:SignedSignatureProperties>'.
             '<xades:SigningTime>'.date('c', $signTime).'</xades:SigningTime>'.
             '<xades:SigningCertificate>'.
@@ -122,7 +121,7 @@ trait Signable
         $sInfo = '<ds:SignedInfo>'."\n".
             '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'.
             '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>'.
-            '<ds:Reference Id="xmldsig-'.$this->referenceId.'-ref0" URI="#DatosEmision">'."\n".
+            '<ds:Reference Id="'.$this->referenceId.'" URI="#DatosEmision">'."\n".
             '<ds:Transforms>'."\n".
             '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">'.
             '</ds:Transform>'."\n".
@@ -130,7 +129,7 @@ trait Signable
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$documentDigest.'</ds:DigestValue>'."\n".
             '</ds:Reference>'."\n".
-            '<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xmldsig'.$this->signatureSignedPropertiesId.'-signedprops">'."\n".
+            '<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="'.$this->signatureSignedPropertiesId.'">'."\n".
             '<ds:Transforms>'. "\n".
             '<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'. "\n" .
             '</ds:Transforms>'."\n".
@@ -145,14 +144,14 @@ trait Signable
         $signatureResult = $xTools->getSignature($signaturePayload, $this->privateKey);
 
         // Make signature
-        $sig = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Signature'.$this->signatureId.'">'."\n".
+        $sig = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="'.$this->signatureId.'">'."\n".
             $sInfo."\n".
-            '<ds:SignatureValue Id="SignatureValue'.$this->signatureValueId.'-sigvalue">'."\n".
+            '<ds:SignatureValue Id="'.$this->signatureValueId.'">'."\n".
             $signatureResult.
             '</ds:SignatureValue>'."\n".
             $kInfo."\n".
             '<ds:Object>'.
-            '<xades:QualifyingProperties Target="#xmldsig'.$this->signatureId.'" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#">'.
+            '<xades:QualifyingProperties Target="'.$this->signatureId.'" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#">'.
             $prop.
             '</xades:QualifyingProperties>'.
             '</ds:Object>'.
