@@ -133,7 +133,7 @@ class FelItem
 
         $rate = self::IVA_RATE * 100;
 
-        $this->tax = number_format($price * $rate, 2, '.', '');
+        $this->tax = number_format(($price / self::IVA_MULTIPLIER) * $rate, 2, '.', '');
         $this->total = number_format($price, 2, '.', '');
 
         if (is_null($unitPrice)) {
