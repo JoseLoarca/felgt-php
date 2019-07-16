@@ -15,9 +15,11 @@ trait Exportable
     /**
      * Export invoice data to XML
      *
+     * @param  string|null  $path
+     *
      * @return string
      */
-    public function export()
+    public function export(string $path = null)
     {
         // Build root xml data
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'."\n";
@@ -52,6 +54,11 @@ trait Exportable
 
         // Inject signature to xml
         $xml = $this->injectSignature($xml);
+
+        // Save document
+        if (!is_null($path)) {
+            return file_put_contents($path, $xml);
+        }
 
         return $xml;
     }
