@@ -88,7 +88,7 @@ trait Signable
             '<xades:SigningCertificate>'.
             '<xades:Cert>'.
             '<xades:CertDigest>'.
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>'.
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>'.
             '<ds:DigestValue>'.$xTools->getCertificateFingerprint($this->publicKey).'</ds:DigestValue>'.
             '</xades:CertDigest>'.
             '<xades:IssuerSerial>'.

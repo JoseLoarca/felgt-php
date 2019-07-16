@@ -116,7 +116,8 @@ class XmlTools
      */
     public function getDigest($input, $prettify = false): string
     {
-        return $this->toBase64(sha1($input, true), $prettify);
+        return $this->toBase64(hash('sha256', $input, true), $prettify);
+//        return $this->toBase64(sha1($input, true), $prettify);
     }
 
     /**
@@ -152,7 +153,7 @@ class XmlTools
      */
     public function getCertificateFingerprint($publicKey, $prettify = false): string
     {
-        $fingerprint = openssl_x509_fingerprint($publicKey, 'sha1', true);
+        $fingerprint = openssl_x509_fingerprint($publicKey, 'sha256', true);
 
         return $this->toBase64($fingerprint, $prettify);
     }
