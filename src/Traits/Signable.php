@@ -88,7 +88,7 @@ trait Signable
             '<xades:SigningCertificate>'.
             '<xades:Cert>'.
             '<xades:CertDigest>'.
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>'.
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"/>'.
             '<ds:DigestValue>'.$xTools->getCertificateFingerprint($this->publicKey).'</ds:DigestValue>'.
             '</xades:CertDigest>'.
             '<xades:IssuerSerial>'.
@@ -123,7 +123,7 @@ trait Signable
             '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>'.
             '<ds:Reference Id="'.$this->referenceId.'" URI="#DatosEmision">'."\n".
             '<ds:Transforms>'."\n".
-            '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">'.
+            '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>'.
             '</ds:Transform>'."\n".
             '</ds:Transforms>'."\n".
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
