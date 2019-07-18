@@ -33,6 +33,8 @@ trait Signable
 
     private $qPropsId;
 
+    private $xadesObjectId;
+
     /**
      * Set sign time
      *
@@ -45,12 +47,13 @@ trait Signable
 
     public function sign(string $signatureId, $publicPath, $privatePath = null, $passphrase = '')
     {
-        $this->signatureId = $signatureId;
-        $this->signatureSignedPropertiesId = $signatureId.'-signedprops';
-        $this->referenceId = $signatureId.'-ref0';
-        $this->signatureValueId = $signatureId.'-sigvalue';
-        $this->keyInfoId = $signatureId.'-keyinfoid';
-        $this->qPropsId = $signatureId . '-qprops';
+        $this->signatureId = 'Signature-' . $signatureId;
+        $this->signatureSignedPropertiesId = $signatureId;
+        $this->referenceId = 'Reference-'.$signatureId;
+        $this->signatureValueId = 'SignatureValue-' . $signatureId;
+        $this->keyInfoId = 'KeyInfoId-Signature-' . $signatureId;
+        $this->qPropsId = 'QualifyingProperties-' .$signatureId;
+        $this->xadesObjectId = 'XadesObjectId-'. $signatureId;
 
         // Load public and private keys
         $reader = new KeyReader($publicPath, $privatePath, $passphrase);
@@ -168,7 +171,7 @@ trait Signable
             $signatureResult.
             '</ds:SignatureValue>'."\n".
             $kInfo."\n".
-            '<ds:Object>'.
+            '<ds:Object Id="'. $this->xadesObjectId .'">'.
             '<xades:QualifyingProperties Target="#'.$this->signatureId.'" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="'. $this->qPropsId . '">'.
             $prop.
             '</xades:QualifyingProperties>'.
