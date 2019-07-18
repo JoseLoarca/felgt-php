@@ -122,7 +122,7 @@ trait Signable
             '</ds:X509Data>'."\n".
             '<ds:KeyValue>'."\n".
             '<ds:RSAKeyValue>'."\n".
-            '<ds:Modulus>'.$modulus.'</ds:Modulus'."\n".
+            '<ds:Modulus>'.$modulus.'</ds:Modulus>'."\n".
             '<ds:Exponent>'.$exponent.'</ds:Exponent>'."\n".
             '</ds:RSAKeyValue>'."\n".
             '</ds:KeyValue>'."\n".
