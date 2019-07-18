@@ -48,7 +48,7 @@ trait Signable
     public function sign(string $signatureId, $publicPath, $privatePath = null, $passphrase = '')
     {
         $this->signatureId = 'Signature-' . $signatureId;
-        $this->signatureSignedPropertiesId = $signatureId;
+        $this->signatureSignedPropertiesId = 'SignedProperties-'.$signatureId;
         $this->referenceId = 'Reference-'.$signatureId;
         $this->signatureValueId = 'SignatureValue-' . $signatureId;
         $this->keyInfoId = 'KeyInfoId-Signature-' . $signatureId;
