@@ -20,13 +20,15 @@ trait Signable
     private $publicKey = null;
 
     private $privateKey = null;
-    
+
     private $signatureId;
 
     private $signatureValueId;
-    
+
     private $referenceId;
-    
+
+    private $keyInfoId;
+
     private $signatureSignedPropertiesId;
 
 
@@ -43,9 +45,10 @@ trait Signable
     public function sign(string $signatureId, $publicPath, $privatePath = null, $passphrase = '')
     {
         $this->signatureId = $signatureId;
-        $this->signatureSignedPropertiesId = $signatureId . '-signedprops';
-        $this->referenceId = $signatureId . '-ref0';
-        $this->signatureValueId = $signatureId . '-sigvalue';
+        $this->signatureSignedPropertiesId = $signatureId.'-signedprops';
+        $this->referenceId = $signatureId.'-ref0';
+        $this->signatureValueId = $signatureId.'-sigvalue';
+        $this->keyInfoId = $signatureId . '-keyinfoid';
 
         // Load public and private keys
         $reader = new KeyReader($publicPath, $privatePath, $passphrase);
@@ -88,7 +91,7 @@ trait Signable
             '<xades:SigningCertificate>'.
             '<xades:Cert>'.
             '<xades:CertDigest>'.
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"/>'.
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'.
             '<ds:DigestValue>'.$xTools->getCertificateFingerprint($this->publicKey).'</ds:DigestValue>'.
             '</xades:CertDigest>'.
             '<xades:IssuerSerial>'.
@@ -98,24 +101,38 @@ trait Signable
             '</xades:Cert>'.
             '</xades:SigningCertificate>'.
             '</xades:SignedSignatureProperties>'.
+            '<xades:SignedDataObjectProperties>'.
+            '<xades:DataObjectFormat ObjectReference="#'. $this->referenceId. '">' .
+            '<xades:MimeType>text/xml</xades:MimeType>'.
+            '<xades:Encoding>UTF-8</xades:Encoding>' .
+            '</xades:DataObjectFormat>'.
+            '</xades:SignedDataObjectProperties>' .
             '</xades:SignedProperties>';
+
+        // Get modulus and exponent
+        $privateData = openssl_pkey_get_details($this->privateKey);
+        $modulus = chunk_split(base64_encode($privateData['rsa']['n']), 76);
+        $modulus = str_replace("\r", "", $modulus);
+        $exponent = base64_encode($privateData['rsa']['e']);
 
         // Generate KeyInfo
         $kInfo = '<ds:KeyInfo>'."\n".
             '<ds:X509Data>'."\n".
             '<ds:X509Certificate>'."\n".$xTools->getCertificate($this->publicKey).'</ds:X509Certificate>'."\n".
-            '<ds:X509SubjectName>'.$certIssuer.'</ds:X509SubjectName>'. "\n".
-            '<ds:X509IssuerSerial>'.
-            '<ds:X509IssuerName>'.$certIssuer.'</ds:X509IssuerName>'. "\n".
-            '<ds:X509SerialNumber>'.$certData['serialNumber'].'</ds:X509SerialNumber>'. "\n".
-            '</ds:X509IssuerSerial>'.
             '</ds:X509Data>'."\n".
+            '<ds:KeyValue>'."\n".
+            '<ds:RSAKeyValue>'."\n".
+            '<ds:Modulus>'.$modulus.'</ds:Modulus'."\n".
+            '<ds:Exponent>'.$exponent.'</ds:Exponent>'."\n".
+            '</ds:RSAKeyValue>'."\n".
+            '</ds:KeyValue>'."\n".
             '</ds:KeyInfo>';
 
         // Calculate digests
         $xmlns = $xTools->getNamespaces();
         $propDigest = $xTools->getDigest($xTools->injectNamespaces($prop, $xmlns));
         $documentDigest = $xTools->getDigest($xml);
+        $kInfoDigest = $xTools->getDigest($xTools->injectNamespaces($kInfo, $xmlns));
 
         // Generate SignedInfo
         $sInfo = '<ds:SignedInfo>'."\n".
@@ -123,20 +140,19 @@ trait Signable
             '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>'.
             '<ds:Reference Id="'.$this->referenceId.'" URI="#DatosEmision">'."\n".
             '<ds:Transforms>'."\n".
-            '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">'.
-            '</ds:Transform>'."\n".
+            '<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'."\n".
             '</ds:Transforms>'."\n".
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$documentDigest.'</ds:DigestValue>'."\n".
             '</ds:Reference>'."\n".
+            '<ds:Reference Id="ReferenceKeyInfo" URI="'. $this->keyInfoId . '">' . "\n" .
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'. "\n" .
+            '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
+            '</ds:Reference>' . "\n" .
             '<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="'.$this->signatureSignedPropertiesId.'">'."\n".
-            '<ds:Transforms>'. "\n".
-            '<ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'. "\n" .
-            '</ds:Transforms>'."\n".
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'. "\n".
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$propDigest.'</ds:DigestValue>'."\n".
             '</ds:Reference>'."\n".
-
             '</ds:SignedInfo>';
 
         // Calculate signature
