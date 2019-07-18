@@ -31,6 +31,7 @@ trait Signable
 
     private $signatureSignedPropertiesId;
 
+    private $qPropsId;
 
     /**
      * Set sign time
@@ -48,7 +49,8 @@ trait Signable
         $this->signatureSignedPropertiesId = $signatureId.'-signedprops';
         $this->referenceId = $signatureId.'-ref0';
         $this->signatureValueId = $signatureId.'-sigvalue';
-        $this->keyInfoId = $signatureId . '-keyinfoid';
+        $this->keyInfoId = $signatureId.'-keyinfoid';
+        $this->qPropsId = $signatureId . '-qprops';
 
         // Load public and private keys
         $reader = new KeyReader($publicPath, $privatePath, $passphrase);
@@ -102,11 +104,11 @@ trait Signable
             '</xades:SigningCertificate>'.
             '</xades:SignedSignatureProperties>'.
             '<xades:SignedDataObjectProperties>'.
-            '<xades:DataObjectFormat ObjectReference="#'. $this->referenceId. '">' .
+            '<xades:DataObjectFormat ObjectReference="#'.$this->referenceId.'">'.
             '<xades:MimeType>text/xml</xades:MimeType>'.
-            '<xades:Encoding>UTF-8</xades:Encoding>' .
+            '<xades:Encoding>UTF-8</xades:Encoding>'.
             '</xades:DataObjectFormat>'.
-            '</xades:SignedDataObjectProperties>' .
+            '</xades:SignedDataObjectProperties>'.
             '</xades:SignedProperties>';
 
         // Get modulus and exponent
@@ -116,7 +118,7 @@ trait Signable
         $exponent = base64_encode($privateData['rsa']['e']);
 
         // Generate KeyInfo
-        $kInfo = '<ds:KeyInfo>'."\n".
+        $kInfo = '<ds:KeyInfo Id="'.$this->keyInfoId.'">'."\n".
             '<ds:X509Data>'."\n".
             '<ds:X509Certificate>'."\n".$xTools->getCertificate($this->publicKey).'</ds:X509Certificate>'."\n".
             '</ds:X509Data>'."\n".
@@ -145,10 +147,10 @@ trait Signable
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$documentDigest.'</ds:DigestValue>'."\n".
             '</ds:Reference>'."\n".
-            '<ds:Reference Id="ReferenceKeyInfo" URI="'. $this->keyInfoId . '">' . "\n" .
-            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'. "\n" .
-            '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
-            '</ds:Reference>' . "\n" .
+            '<ds:Reference Id="ReferenceKeyInfo" URI="#'.$this->keyInfoId.'">'."\n".
+            '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
+            '<ds:DigestValue>'.$kInfoDigest.'</ds:DigestValue>'."\n".
+            '</ds:Reference>'."\n".
             '<ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="'.$this->signatureSignedPropertiesId.'">'."\n".
             '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>'."\n".
             '<ds:DigestValue>'.$propDigest.'</ds:DigestValue>'."\n".
@@ -167,7 +169,7 @@ trait Signable
             '</ds:SignatureValue>'."\n".
             $kInfo."\n".
             '<ds:Object>'.
-            '<xades:QualifyingProperties Target="'.$this->signatureId.'" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#">'.
+            '<xades:QualifyingProperties Target="#'.$this->signatureId.'" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="'. $this->qPropsId . '">'.
             $prop.
             '</xades:QualifyingProperties>'.
             '</ds:Object>'.
