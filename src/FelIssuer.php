@@ -123,10 +123,10 @@ class FelIssuer
 
         // Should we append email address to the issuer data?
         if (!is_null($this->emailAddress)) {
-            $xml .= ' CorreoEmisor="'.$xTools->escapeValue($this->emailAddress).'" ';
+            $xml .= ' CorreoEmisor="'.$xTools->escapeValue($this->emailAddress).'"';
         }
 
-        $xml .= 'NITEmisor="'.$xTools->escapeValue($this->identifier).'" NombreComercial="'.$xTools->escapeValue($this->businessName).'" NombreEmisor="'.$xTools->escapeValue($this->name).'">';
+        $xml .= ' NITEmisor="'.$xTools->escapeValue($this->identifier).'" NombreComercial="'.$xTools->escapeValue($this->businessName).'" NombreEmisor="'.$xTools->escapeValue($this->name).'">';
 
         // Build the address issuer data
         $issuerAddressXml = '<dte:DireccionEmisor>';
