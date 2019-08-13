@@ -138,6 +138,8 @@ class FelItem
 
         if (is_null($unitPrice)) {
             $this->unitPrice = number_format($this->price / $quantity, 2, '.', '');
+        } else {
+            $this->unitPrice  = number_format($unitPrice, 2, '.', '');
         }
     }
 
