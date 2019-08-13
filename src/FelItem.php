@@ -182,7 +182,7 @@ class FelItem
         $xml .= '<dte:Cantidad>'.$xTools->escapeValue($this->quantity).'</dte:Cantidad>';
         $xml .= '<dte:UnidadMedida>'.$xTools->escapeValue($this->unitMeasure).'</dte:UnidadMedida>';
         $xml .= '<dte:Descripcion>'.$xTools->escapeValue($this->description).'</dte:Descripcion>';
-        $xml .= '<dte:PrecioUnitario>'.$xTools->escapeValue($this->total).'</dte:PrecioUnitario>';
+        $xml .= '<dte:PrecioUnitario>'.$xTools->escapeValue($this->unitPrice).'</dte:PrecioUnitario>';
         $xml .= '<dte:Precio>'.$xTools->escapeValue($this->total).'</dte:Precio>';
         $xml .= '<dte:Descuento>'.$xTools->escapeValue($this->discount).'</dte:Descuento>';
 
