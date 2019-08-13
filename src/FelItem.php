@@ -137,7 +137,7 @@ class FelItem
         $this->total = number_format($price, 2, '.', '');
 
         if (is_null($unitPrice)) {
-            $this->unitPrice = number_format($this->price / $quantity, 2, '.', '');
+            $this->unitPrice = number_format($this->total / $quantity, 2, '.', '');
         } else {
             $this->unitPrice  = number_format($unitPrice, 2, '.', '');
         }
